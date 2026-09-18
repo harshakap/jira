@@ -1,0 +1,15 @@
+# JIRA Portfolio app — structure & requirements
+
+Ordered by priority: existing pages to strengthen first, then placeholder decisions.
+
+| Item | Requirement type | Objective | How it helps you & the team |
+|---|---|---|---|
+| **By Person** | Enhance existing — highest priority | Add days-in-current-status and last-activity per story, pulled from Jira changelog (not the due-date field), plus a visible "stale" flag | This is the page that actually fixes daily scrum: instead of "I've been working on it," the ticket's own history shows how long it's really sat — same data for everyone, no PM needed to police it |
+| **Portfolio Summary** | Enhance existing — data honesty fix | Relabel the Run/Change split so the 0% Run segment reads "Run work not yet tracked" instead of implying there is none | Keeps the executive view from silently overstating completeness — matches the "Not tracked in JIRA" honesty you already use elsewhere in the app |
+| **Work Explorer** | Enhance existing — minor | Turn the existing "no due date" / "overdue" tags into filters, not just labels | Lets anyone isolate exactly the stale or undated work without hunting through 152 stories manually |
+| **Ask the Data** | Enhance existing — expand into two modes | Add a "Create" mode alongside the existing "Ask" mode: plain-language input → GenAI drafts title, acceptance criteria, epic match, sub-tasks → human reviews → creates in Jira | Removes the create-a-story form entirely; one chat surface does both querying the portfolio and drafting new work, and standardizes acceptance criteria without needing a scrum master |
+| **Create / Update Story** (placeholder) | Merge — do not build standalone | Fold into Ask the Data's new "Create" mode rather than building a separate page | Avoids building two UIs that do the same kind of interaction; one surface to maintain |
+| **Capacity** (placeholder) | New — sequence after By Person | Aggregate the per-person aging/status data into team-level allocation once it's trustworthy | Becomes an accurate rollup instead of a nicer-looking version of today's incomplete picture |
+| **Customer Support** (placeholder) | Hold — sequence after Capacity | Reserved for INC/ITSR intake; rename to something literal like "Run work" when built | Keeps run work (support/incident time) visible against the same 15 people, once the data source question is resolved |
+| **JIRA Management + Export / Analysis** (placeholders) | Consolidate into one page | Combine board/project config and admin settings with data export and any deeper analysis — inline CSV export already exists elsewhere, so this becomes the place for anything beyond a quick download | One admin/utility page instead of two thin ones — keeps the top-level nav focused on work views, not tool housekeeping |
+| **Refresh / Status** (placeholder) | Keep standalone — lightweight | Show data sync status and last refresh time (already partially visible in the sidebar footer today) | Quick trust-check for anyone wondering whether the numbers on screen are current |

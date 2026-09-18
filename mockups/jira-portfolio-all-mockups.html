@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>JIRA Portfolio — detailed mockups</title>
+<style>
+  :root{
+    --bg:#F1F2F0; --panel:#FFFFFF; --ink:#16181D; --ink-soft:#5B6169; --ink-faint:#9297A0;
+    --line:#E2E4E1; --sidebar:#12151B; --sidebar-active:#2554E8; --sidebar-ink:#C7CBD3;
+    --sidebar-ink-dim:#6A707C; --sidebar-hover:#1A1F29;
+    --blue:#2554E8; --blue-soft:#E8EDFD;
+    --change-bg:#DCFCE7; --change-ink:#166534;
+    --run-bg:#FEF3C7; --run-ink:#92400E;
+    --waf-yellow-bg:#FEF3C7; --waf-yellow-ink:#92400E;
+    --waf-green-bg:#DCFCE7; --waf-green-ink:#166534;
+    --waf-gray-bg:#E5E7EB; --waf-gray-ink:#374151;
+    --waf-black-bg:#111827; --waf-black-ink:#FFFFFF;
+    --red:#DC2626; --red-soft:#FEE2E2; --amber:#B45309; --amber-soft:#FEF3C7;
+    --sans: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    --mono: "SF Mono","IBM Plex Mono",ui-monospace,Menlo,monospace;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:13.5px;}
+  .topbar{background:#fff;border-bottom:1px solid var(--line);padding:9px 22px;font-size:13px;color:var(--ink-soft);}
+  .shell{display:flex;min-height:100vh;}
+
+  .sidebar{width:230px;flex:0 0 230px;background:var(--sidebar);color:var(--sidebar-ink);
+    padding:20px 12px;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;}
+  .brand .name{font-size:15px;font-weight:700;color:#fff;padding:0 10px;}
+  .brand .sub{font-size:11.5px;color:var(--sidebar-ink-dim);padding:3px 10px 18px;}
+  .nav{display:flex;flex-direction:column;gap:2px;flex:1;}
+  .nav-item{padding:9px 10px;border-radius:6px;font-size:13px;cursor:pointer;color:var(--sidebar-ink);}
+  .nav-item:hover{background:var(--sidebar-hover);}
+  .nav-item.active{background:var(--sidebar-active);color:#fff;font-weight:600;}
+  .sidebar-foot{padding:10px;font-size:11.5px;color:var(--sidebar-ink-dim);border-top:1px solid #22262F;margin-top:10px;padding-top:14px;}
+
+  .main{flex:1;padding:26px 32px 60px;max-width:1280px;}
+  .page{display:none;}
+  .page.active{display:block;}
+  h1.pt{font-size:20px;font-weight:700;margin:0 0 3px;}
+  p.pd{font-size:13px;color:var(--ink-soft);margin:0 0 18px;max-width:680px;}
+
+  .filterbar{display:flex;flex-wrap:wrap;gap:14px;background:var(--panel);border:1px solid var(--line);
+    border-radius:8px;padding:14px 16px;margin-bottom:18px;}
+  .filterbar .f{display:flex;flex-direction:column;gap:4px;min-width:110px;}
+  .filterbar label{font-size:11px;color:var(--ink-faint);}
+  .filterbar select{font-size:12.5px;padding:5px 8px;border:1px solid var(--line);border-radius:5px;background:#fff;color:var(--ink);}
+
+  .stat-row{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:16px;}
+  .stat-card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px 16px;}
+  .stat-card.warn{border-color:var(--amber);background:var(--amber-soft);}
+  .stat-num{font-family:var(--mono);font-size:22px;font-weight:700;}
+  .stat-card.warn .stat-num{color:var(--amber);font-size:15px;}
+  .stat-label{font-size:11.5px;color:var(--ink-faint);margin-top:2px;}
+
+  .grid2{display:grid;grid-template-columns:1.5fr 1fr;gap:16px;}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:16px 18px;}
+  .card h3{font-size:12px;font-weight:700;color:var(--ink-soft);margin:0 0 10px;}
+
+  table{width:100%;border-collapse:collapse;font-size:12.5px;}
+  th{text-align:left;font-size:11px;color:var(--ink-faint);font-weight:600;padding:0 8px 7px;border-bottom:1px solid var(--line);}
+  td{padding:8px 8px;border-bottom:1px solid var(--line);vertical-align:middle;}
+  tr:last-child td{border-bottom:none;}
+  .epic-link{color:var(--blue);font-weight:500;}
+  .k{color:var(--ink-faint);font-size:11px;}
+
+  .badge{display:inline-block;font-size:10.5px;font-weight:600;padding:2px 7px;border-radius:4px;white-space:nowrap;}
+  .waf-yellow{background:var(--waf-yellow-bg);color:var(--waf-yellow-ink);}
+  .waf-green{background:var(--waf-green-bg);color:var(--waf-green-ink);}
+  .waf-gray{background:var(--waf-gray-bg);color:var(--waf-gray-ink);}
+  .waf-black{background:var(--waf-black-bg);color:var(--waf-black-ink);}
+  .badge-change{background:var(--change-bg);color:var(--change-ink);}
+  .badge-run{background:var(--run-bg);color:var(--run-ink);}
+  .tag{display:inline-block;font-size:10.5px;padding:2px 7px;border-radius:20px;margin-right:4px;}
+  .tag-overdue{background:var(--red-soft);color:var(--red);}
+  .tag-nodue{background:#F3F4F1;color:var(--ink-faint);}
+  .tag-stale{background:var(--red-soft);color:var(--red);font-weight:600;}
+
+  .donut-row{display:flex;gap:16px;margin-bottom:16px;}
+  .donut{width:92px;height:92px;border-radius:50%;flex:0 0 92px;
+    display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:700;font-size:13px;}
+  .donut-label{font-size:11.5px;color:var(--ink-soft);align-self:center;}
+  .insight{display:flex;gap:9px;padding:9px 0;border-bottom:1px solid var(--line);}
+  .insight:last-child{border-bottom:none;}
+  .insight .dot{width:8px;height:8px;border-radius:2px;margin-top:4px;flex:0 0 8px;}
+  .insight .t{font-size:12.5px;font-weight:600;}
+  .insight .d{font-size:11.5px;color:var(--ink-faint);margin-top:1px;}
+
+  .tabs{display:flex;gap:2px;border-bottom:1px solid var(--line);margin-bottom:16px;}
+  .tab{padding:8px 4px;margin-right:20px;font-size:13px;color:var(--ink-faint);cursor:pointer;border-bottom:2px solid transparent;}
+  .tab.active{color:var(--ink);border-bottom-color:var(--blue);font-weight:600;}
+  .subpage{display:none;}
+  .subpage.active{display:block;}
+
+  .chip-row{display:flex;gap:8px;margin-bottom:14px;}
+  .chip{font-size:11.5px;padding:5px 11px;border-radius:20px;border:1px solid var(--line);background:#fff;cursor:pointer;color:var(--ink-soft);}
+  .chip.active{background:var(--blue-soft);border-color:var(--blue);color:var(--blue);font-weight:600;}
+
+  .search{width:100%;max-width:320px;padding:7px 11px;border:1px solid var(--line);border-radius:6px;font-size:12.5px;margin-bottom:14px;}
+
+  .status-pill{font-size:10.5px;font-weight:600;padding:3px 8px;border-radius:20px;white-space:nowrap;}
+  .p-ontrack{background:var(--change-bg);color:var(--change-ink);}
+  .p-risk{background:var(--red-soft);color:var(--red);}
+  .p-eval{background:#E8EDFD;color:var(--blue);}
+  .p-approved{background:var(--change-bg);color:var(--change-ink);}
+  .p-rejected{background:#F3F4F1;color:var(--ink-faint);}
+  .p-new{background:var(--waf-yellow-bg);color:var(--waf-yellow-ink);}
+
+  .wip-ok{color:var(--change-ink);font-weight:700;}
+  .wip-over{color:var(--red);font-weight:700;}
+
+  .kanban{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+  .kcol h4{font-size:12px;color:var(--ink-soft);margin:0 0 10px;display:flex;justify-content:space-between;}
+  .kcol .n{background:var(--line);border-radius:10px;padding:1px 7px;font-size:11px;color:var(--ink-soft);}
+  .kcard{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:11px 12px;margin-bottom:10px;}
+  .kcard .title{font-size:12.5px;font-weight:600;margin-bottom:6px;}
+  .kcard .meta{display:flex;gap:6px;flex-wrap:wrap;}
+  .src-tag{font-size:10px;padding:2px 6px;border-radius:4px;background:#F3F4F1;color:var(--ink-soft);}
+  .qtr-chip{font-size:10px;padding:2px 6px;border-radius:4px;background:var(--blue-soft);color:var(--blue);font-weight:600;}
+
+  .intake-row{border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin-bottom:10px;background:var(--panel);}
+  .intake-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
+  .intake-title{font-size:13.5px;font-weight:600;}
+  .intake-meta{font-size:11.5px;color:var(--ink-faint);}
+  .eval-box{background:#FAFAF9;border:1px solid var(--line);border-radius:6px;padding:12px 14px;margin-top:10px;font-size:12.5px;}
+  .eval-box h5{font-size:11px;color:var(--ink-faint);margin:10px 0 4px;text-transform:none;}
+  .eval-box h5:first-child{margin-top:0;}
+  .btn{font-size:12px;padding:7px 14px;border-radius:6px;border:none;cursor:pointer;font-weight:600;}
+  .btn-approve{background:var(--change-ink);color:#fff;}
+  .btn-reject{background:#F3F4F1;color:var(--ink-soft);}
+  .btn-primary{background:var(--blue);color:#fff;}
+
+  .chatbox{border:1px solid var(--line);border-radius:8px;background:var(--panel);}
+  .chat-head{padding:10px 14px;border-bottom:1px solid var(--line);font-size:12.5px;color:var(--ink-soft);}
+  .chat-body{padding:16px;display:flex;flex-direction:column;gap:12px;min-height:120px;}
+  .bubble{max-width:85%;padding:9px 12px;border-radius:9px;font-size:12.5px;line-height:1.5;}
+  .bubble.user{align-self:flex-end;background:var(--blue);color:#fff;}
+  .bubble.bot{align-self:flex-start;background:#F3F4F1;}
+  .chat-input{display:flex;gap:8px;padding:12px 14px;border-top:1px solid var(--line);}
+  .chat-input input{flex:1;border:1px solid var(--line);border-radius:6px;padding:8px 11px;font-size:12.5px;}
+  .chat-input button{border:none;background:var(--blue);color:#fff;border-radius:6px;padding:0 14px;font-size:12.5px;cursor:pointer;}
+
+  .quicktask{display:flex;gap:8px;align-items:center;}
+  .quicktask input, .quicktask select{padding:7px 10px;border:1px solid var(--line);border-radius:6px;font-size:12.5px;}
+  .quicktask input{flex:1;}
+
+  .draft-field{margin-bottom:10px;}
+  .draft-field .lbl{font-size:11px;color:var(--ink-faint);margin-bottom:3px;}
+  .draft-field .val{font-size:12.5px;border:1px solid var(--line);border-radius:5px;padding:7px 10px;background:#fff;}
+  ul.ac{margin:4px 0 0;padding-left:18px;font-size:12.5px;}
+  ul.ac li{margin-bottom:3px;}
+
+  .toggle-row{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--line);}
+  .toggle-row:last-child{border-bottom:none;}
+  .toggle-row .tt{font-size:13px;font-weight:500;}
+  .toggle-row .td{font-size:11.5px;color:var(--ink-faint);}
+  .switch{width:34px;height:19px;border-radius:10px;background:var(--line);position:relative;flex:0 0 34px;cursor:pointer;}
+  .switch.on{background:var(--blue);}
+  .switch .dot2{width:15px;height:15px;background:#fff;border-radius:50%;position:absolute;top:2px;left:2px;transition:left .15s;}
+  .switch.on .dot2{left:17px;}
+
+  .export-card{border:1px solid var(--line);border-radius:8px;padding:16px 18px;background:var(--panel);}
+  .export-card h4{font-size:13.5px;margin:0 0 4px;}
+  .export-card p{font-size:12px;color:var(--ink-soft);margin:0 0 10px;}
+  .export-card ul{font-size:12px;color:var(--ink-soft);margin:0 0 12px;padding-left:18px;}
+
+  .quality-row{background:var(--amber-soft);border-left:3px solid var(--amber);padding:8px 12px;border-radius:0 6px 6px 0;margin-bottom:1px;}
+
+  .placeholder-card{border:1px dashed var(--line);border-radius:8px;padding:28px;text-align:center;color:var(--ink-soft);}
+
+  /* ---- Sprint Board (alt) — namespaced sb- to avoid clashing with pages above ---- */
+  .sb-head-row{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px;}
+  .sb-head-actions{display:flex;gap:10px;align-items:center;}
+  .sb-select{font-size:12.5px;padding:7px 12px;border:1px solid var(--line);border-radius:6px;background:#fff;}
+  .sb-btn-create{background:var(--blue);color:#fff;border:none;font-size:12.5px;font-weight:600;padding:8px 14px;border-radius:6px;cursor:pointer;}
+  .sb-stat-row{display:flex;gap:34px;padding:16px 0 20px;border-bottom:1px solid var(--line);margin-bottom:18px;flex-wrap:wrap;}
+  .sb-stat{display:flex;flex-direction:column;}
+  .sb-stat .n{font-size:24px;font-weight:700;}
+  .sb-stat .l{font-size:11.5px;color:var(--ink-faint);margin-top:2px;}
+  .sb-stat.blocked .n{color:var(--red);}
+  .sb-filter-row{display:flex;gap:14px;align-items:center;margin-bottom:18px;flex-wrap:wrap;}
+  .sb-filter-row select{font-size:12.5px;padding:6px 10px;border:1px solid var(--line);border-radius:6px;background:#fff;}
+  .sb-chk{font-size:12.5px;display:flex;align-items:center;gap:6px;color:var(--ink-soft);}
+  .sb-search{flex:1;min-width:180px;font-size:12.5px;padding:6px 10px;border:1px solid var(--line);border-radius:6px;}
+  .sb-grp{font-size:12.5px;color:var(--ink-faint);margin-left:auto;display:flex;align-items:center;gap:8px;}
+  h2.sb-sec{font-size:14.5px;font-weight:700;margin:26px 0 12px;}
+  tr.sb-story-row{cursor:pointer;}
+  tr.sb-story-row:hover{background:#FAFAFA;}
+  .sb-chev{display:inline-block;width:14px;color:var(--ink-faint);transition:transform .15s;}
+  .sb-chev.open{transform:rotate(90deg);}
+  .sb-story-name{font-weight:600;}
+  .sb-story-sub{font-size:11px;color:var(--ink-faint);margin-top:2px;}
+  .sb-avatar{width:22px;height:22px;border-radius:50%;color:#fff;font-size:10px;font-weight:700;
+    display:inline-flex;align-items:center;justify-content:center;margin-right:6px;flex:0 0 22px;}
+  .sb-who{display:flex;align-items:center;}
+  .sb-pill{font-size:10.5px;font-weight:600;padding:3px 9px;border-radius:20px;white-space:nowrap;}
+  .sb-pill-inprogress{background:var(--blue-soft);color:var(--blue);}
+  .sb-pill-blocked{background:var(--red-soft);color:var(--red);}
+  .sb-pill-review{background:#EDE9FE;color:#5B21B6;}
+  .sb-pill-ready{background:#F1F1EF;color:var(--ink-soft);}
+  .sb-pill-done{background:var(--change-bg);color:var(--change-ink);}
+  .sb-pill-ontrack{background:var(--change-bg);color:var(--change-ink);}
+  .sb-pill-atrisk{background:var(--amber-soft);color:var(--amber);}
+  .sb-subtask-block{background:#FAFAF9;}
+  .sb-subtask-block td{padding:0;border-bottom:none;}
+  .sb-subtask-inner{padding:6px 10px 14px 40px;}
+  .sb-subtask-inner table td{padding:6px 8px;}
+  .sb-subtask-inner th{padding:0 8px 6px;}
+  .sb-blocker-text{font-size:12px;color:var(--ink-soft);}
+  .sb-blocker-none{color:var(--ink-faint);}
+
+  .swim-table{width:100%;border-collapse:collapse;font-size:12.5px;}
+  .swim-table th{text-align:left;font-size:11px;color:var(--ink-faint);font-weight:600;padding:0 12px 8px;border-bottom:1px solid var(--line);}
+  .swim-table td{padding:12px;border-bottom:1px solid var(--line);vertical-align:top;width:25%;}
+  .swim-table tr:last-child td{border-bottom:none;}
+  .swim-platform{font-weight:700;font-size:13px;white-space:nowrap;}
+  .swim-table ul{margin:0;padding-left:16px;}
+  .swim-table li{margin-bottom:6px;}
+  .swim-now, .swim-next, .swim-later{border-left:3px solid var(--line);}
+  .status-chip{display:inline-block;font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;margin-top:5px;}
+  .status-done{background:var(--change-bg);color:var(--change-ink);}
+  .status-inprogress{background:var(--blue-soft);color:var(--blue);}
+  .status-planned{background:#F1F1EF;color:var(--ink-faint);}
+  .swim-legend{display:flex;gap:16px;margin-bottom:14px;font-size:11.5px;color:var(--ink-soft);}
+  .swim-legend span{display:inline-flex;align-items:center;gap:6px;}
+</style>
+
+<style>
+  .exec-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;}
+  .platform-chip{display:inline-block;font-size:11px;font-weight:700;padding:4px 10px;border-radius:5px;background:var(--waf-gray-bg);color:var(--ink);margin-left:6px;}
+  .exec-checklist{display:grid;grid-template-columns:1fr 1fr;gap:22px;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:16px 20px;margin-bottom:22px;}
+  .exec-checklist h5{font-size:12px;margin:0 0 8px;color:var(--ink);}
+  .chk-list{list-style:none;margin:0;padding:0;font-size:12px;}
+  .chk-list li{display:flex;align-items:flex-start;gap:8px;margin-bottom:7px;line-height:1.4;}
+  .chk-box{width:11px;height:11px;border-radius:2px;margin-top:2px;flex:0 0 11px;}
+  .chk-box.done{background:var(--change-ink);}
+  .chk-box.inprog{background:var(--blue);}
+  .chk-box.planned{border:1.5px solid var(--ink-faint);}
+  .exec-arrow{display:flex;position:relative;height:50px;margin:26px 0 20px;}
+  .arrow-seg{flex:1;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:12.5px;}
+  .seg-first{background:linear-gradient(90deg,#B8792A,#E0A857);clip-path:polygon(0 0, calc(100% - 22px) 0, 100% 50%, calc(100% - 22px) 100%, 0 100%);}
+  .seg-last{background:linear-gradient(90deg,#1E2761,#0E3B57);margin-left:-22px;clip-path:polygon(22px 0, calc(100% - 22px) 0, 100% 50%, calc(100% - 22px) 100%, 22px 100%, 42px 50%);}
+  .milestone{position:absolute;top:-13px;left:46.5%;font-size:17px;color:var(--ink);}
+  .exec-detail{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-bottom:18px;}
+  .exec-detail h5{font-size:12px;margin:14px 0 6px;color:var(--ink);}
+  .exec-detail h5:first-child{margin-top:0;}
+  .exec-cat{margin-bottom:4px;}
+  .exec-cat:first-child .cat-head{margin-top:0;}
+  .cat-head{display:flex;align-items:center;gap:6px;font-size:12px;margin:14px 0 0;color:var(--ink);cursor:pointer;padding:6px 0;}
+  .cat-chev{display:inline-block;font-size:14px;color:var(--ink-faint);transition:transform .15s;}
+  .exec-cat.open .cat-chev{transform:rotate(90deg);}
+  .cat-sum{margin-left:auto;font-size:11px;font-weight:400;color:var(--ink-faint);}
+  .exec-cat .dot-list{display:none;margin-top:6px;}
+  .exec-cat.open .dot-list{display:block;}
+  .dot-list{list-style:none;margin:0;padding:0;font-size:12px;}
+  .dot-list li{display:flex;align-items:flex-start;gap:8px;margin-bottom:6px;line-height:1.4;}
+  .dot{width:8px;height:8px;border-radius:50%;margin-top:4px;flex:0 0 8px;}
+  .dot.done{background:var(--change-ink);}
+  .dot.inprog{background:var(--blue);}
+  .dot.planned{border:1.5px solid var(--ink-faint);}
+  .exec-footer{display:flex;justify-content:space-between;align-items:center;padding-top:14px;border-top:1px solid var(--line);flex-wrap:wrap;gap:12px;}
+  .exec-legend{display:flex;gap:16px;font-size:11.5px;color:var(--ink-soft);}
+  .exec-legend span{display:inline-flex;align-items:center;gap:6px;}
+  .exec-tags{display:flex;gap:8px;flex-wrap:wrap;}
+  .tag-chip{font-size:10.5px;padding:3px 9px;border-radius:20px;background:var(--waf-gray-bg);color:var(--ink-soft);}
+
+  .map-row{border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin-bottom:10px;background:var(--panel);}
+  .map-head{display:flex;justify-content:space-between;align-items:center;cursor:pointer;}
+  .map-title{font-size:13.5px;font-weight:600;}
+  .map-sub{font-size:11.5px;color:var(--ink-faint);margin-top:2px;}
+  .map-status{display:flex;align-items:center;gap:10px;}
+  .progress-mini{width:70px;height:6px;background:#EEEFED;border-radius:3px;overflow:hidden;}
+  .progress-mini div{height:100%;background:var(--change-ink);}
+  .map-body{margin-top:12px;padding-top:12px;border-top:1px solid var(--line);display:none;}
+  .map-row.open .map-body{display:block;}
+  .story-chip-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;font-size:12px;}
+  .story-chip-row .jk{color:var(--ink-faint);font-size:11px;margin-right:6px;}
+  .link-more{display:flex;gap:8px;margin-top:10px;}
+  .link-more input{flex:1;font-size:12px;padding:6px 10px;border:1px solid var(--line);border-radius:6px;}
+</style>
+</head>
+<body>
+
+<div class="topbar">Delivery &amp; Support Management</div>
+<div class="shell">
+  <div class="sidebar">
+    <div class="brand"><div class="name">JIRA Portfolio</div><div class="sub">Data source: Live JIRA</div></div>
+    <div class="nav">
+      <div class="nav-item active" data-page="portfolio">Portfolio Summary</div>
+      <div class="nav-item" data-page="explorer">Work Explorer</div>
+      <div class="nav-item" data-page="byperson">By Person</div>
+      <div class="nav-item" data-page="capacity">Capacity</div>
+      <div class="nav-item" data-page="roadmap">Roadmap</div>
+      <div class="nav-item" data-page="intake">Customer Intake</div>
+      <div class="nav-item" data-page="support">Customer Support</div>
+      <div class="nav-item" data-page="ask">Ask the Data</div>
+      <div class="nav-item" data-page="admin">Admin</div>
+      <div class="nav-item" data-page="sprintboard">Sprint Board (alt view)</div>
+    </div>
+    <div class="sidebar-foot">15 people · synced from Jira<br>Last refresh: 2026-09-11 06:40</div>
+  </div>
+
+  <div class="main">
+
+    <!-- ================= PORTFOLIO SUMMARY ================= -->
+    <div class="page active" id="page-portfolio">
+      <h1 class="pt">Portfolio Summary</h1>
+      <p class="pd">Executive view of Epics, Features, and Stories across the selected JIRA portfolio.</p>
+      <div class="filterbar">
+        <div class="f"><label>JIRA Boards</label><select><option>All</option></select></div>
+        <div class="f"><label>Year</label><select><option>2026</option></select></div>
+        <div class="f"><label>Quarter</label><select><option>All</option></select></div>
+        <div class="f"><label>Platform</label><select><option>All</option></select></div>
+        <div class="f"><label>WAF</label><select><option>All</option></select></div>
+        <div class="f"><label>Run / Change</label><select><option>All</option></select></div>
+        <div class="f"><label>Assignee</label><select><option>All</option></select></div>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat-card"><div class="stat-num">7</div><div class="stat-label">Epics · active/mapped</div></div>
+        <div class="stat-card"><div class="stat-num">24</div><div class="stat-label">Features</div></div>
+        <div class="stat-card"><div class="stat-num">152</div><div class="stat-label">Stories · backlog composition</div></div>
+        <div class="stat-card"><div class="stat-num">100%</div><div class="stat-label">Change · 24 of 24 features</div></div>
+        <div class="stat-card warn"><div class="stat-num">Not yet tracked</div><div class="stat-label">Run · INC/ITSR not wired in</div></div>
+      </div>
+
+      <div class="grid2">
+        <div class="card">
+          <h3>Portfolio by epic — story count with feature/WAF/type breakdown</h3>
+          <table>
+            <tr><th>Epic</th><th>WAF</th><th>Type</th><th>Features</th><th>Stories</th><th>Share</th></tr>
+            <tr><td><span class="epic-link">TechDMA: Model Transformation</span><br><span class="k">FMEPIC-3960</span></td><td><span class="badge waf-yellow">YELLOW</span></td><td><span class="badge badge-change">Change</span></td><td>6</td><td>48</td><td>31.6%</td></tr>
+            <tr><td><span class="epic-link">Analytics &amp; ML Platform Enhancement</span><br><span class="k">FMEPIC-4554</span></td><td><span class="badge waf-green">GREEN</span></td><td><span class="badge badge-change">Change</span></td><td>6</td><td>43</td><td>28.3%</td></tr>
+            <tr><td><span class="epic-link">Perform CDO "Keep the Lights On"</span><br><span class="k">FMEPIC-3140</span></td><td><span class="badge waf-gray">GRAY</span></td><td><span class="badge badge-change">Change</span></td><td>3</td><td>25</td><td>16.4%</td></tr>
+            <tr><td><span class="epic-link">Manage Data Vulnerabilities and Risk</span><br><span class="k">FMEPIC-3145</span></td><td><span class="badge waf-gray">GRAY</span></td><td><span class="badge badge-change">Change</span></td><td>5</td><td>22</td><td>14.5%</td></tr>
+            <tr><td><span class="epic-link">Reduce Technical Debt and Optimize Platforms</span><br><span class="k">FMEPIC-4083</span></td><td><span class="badge waf-black">BLACK</span></td><td><span class="badge badge-change">Change</span></td><td>2</td><td>4</td><td>2.6%</td></tr>
+          </table>
+        </div>
+        <div>
+          <div class="card" style="margin-bottom:14px;">
+            <h3>Change vs Run — portfolio composition</h3>
+            <div class="donut-row">
+              <div class="donut" style="background:conic-gradient(var(--change-ink) 0 100%);color:#fff;">24</div>
+              <div class="donut-label">By features<br><b>Change 24 (100%)</b></div>
+            </div>
+            <div class="donut-row">
+              <div class="donut" style="background:conic-gradient(var(--change-ink) 0 95%, var(--waf-gray-bg) 95% 100%);color:#fff;">152</div>
+              <div class="donut-label">By stories<br><b>Change 144 (95%), Unmapped 8 (5%)</b></div>
+            </div>
+          </div>
+          <div class="card">
+            <h3>Executive insights</h3>
+            <div class="insight"><div class="dot" style="background:var(--blue);"></div><div><div class="t">Portfolio concentration</div><div class="d">FMEPIC-3960 represents 48 of 152 stories, 31.6% of filtered backlog</div></div></div>
+            <div class="insight"><div class="dot" style="background:var(--change-ink);"></div><div><div class="t">Transformation orientation</div><div class="d">100% of features and 95% of stories classified as Change</div></div></div>
+            <div class="insight"><div class="dot" style="background:var(--amber);"></div><div><div class="t">Run work not yet tracked</div><div class="d">INC/ITSR volume isn't flowing into this portfolio yet — the 0% Run figure reflects a data gap, not zero support load</div></div></div>
+            <div class="insight"><div class="dot" style="background:var(--ink-faint);"></div><div><div class="t">Mapping / data quality</div><div class="d">8 stories require WAF or Run/Change classification</div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= WORK EXPLORER ================= -->
+    <div class="page" id="page-explorer">
+      <h1 class="pt">Work Explorer</h1>
+      <p class="pd">Use the portfolio filters above, then review Epics, Features, or Stories below.</p>
+      <div class="stat-row" style="grid-template-columns:repeat(4,1fr);">
+        <div class="stat-card"><div class="stat-num">7</div><div class="stat-label">Epics</div></div>
+        <div class="stat-card"><div class="stat-num">152</div><div class="stat-label">Stories</div></div>
+        <div class="stat-card"><div class="stat-num">24</div><div class="stat-label">Features</div></div>
+        <div class="stat-card"><div class="stat-num">8</div><div class="stat-label">Stories w/o a feature</div></div>
+      </div>
+      <div class="tabs">
+        <div class="tab active" data-sub="ex-epics" data-group="explorer">Epics</div>
+        <div class="tab" data-sub="ex-features" data-group="explorer">Features</div>
+        <div class="tab" data-sub="ex-stories" data-group="explorer">Stories</div>
+      </div>
+
+      <div class="subpage active" id="ex-epics">
+        <input class="search" placeholder="Search epics...">
+        <div class="chip-row">
+          <div class="chip active">All</div><div class="chip">Overdue</div><div class="chip">No due date</div><div class="chip">Stale</div>
+        </div>
+        <div class="card">
+          <table>
+            <tr><th>Epic</th><th>Features</th><th>Stories</th><th>Tags</th></tr>
+            <tr><td class="epic-link">TechDMA: Model Transformation</td><td>6</td><td>48</td><td><span class="tag tag-overdue">3 overdue</span><span class="tag tag-nodue">37 no due date</span></td></tr>
+            <tr><td class="epic-link">Analytics &amp; ML Platform Enhancement</td><td>6</td><td>43</td><td><span class="tag tag-overdue">1 overdue</span><span class="tag tag-nodue">38 no due date</span></td></tr>
+            <tr><td class="epic-link">Perform CDO "Keep the Lights On"</td><td>3</td><td>25</td><td><span class="tag tag-nodue">21 no due date</span></td></tr>
+            <tr><td class="epic-link">Manage Data Vulnerabilities and Risk</td><td>5</td><td>22</td><td><span class="tag tag-nodue">22 no due date</span></td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="subpage" id="ex-features">
+        <input class="search" placeholder="Search features...">
+        <div class="card">
+          <table>
+            <tr><th>Feature</th><th>Epic</th><th>Stories</th><th>Tags</th></tr>
+            <tr><td>Optimize Operations and Reliability for Domino Data Lab</td><td class="k">Perform CDO KTLO</td><td>15</td><td><span class="tag tag-nodue">12 no due date</span></td></tr>
+            <tr><td>Enable Advanced Features for SageMaker</td><td class="k">Analytics &amp; ML Platform</td><td>14</td><td><span class="tag tag-overdue">1 overdue</span><span class="tag tag-nodue">11 no due date</span></td></tr>
+            <tr><td>Enable Advanced Features for Posit Platforms</td><td class="k">Analytics &amp; ML Platform</td><td>13</td><td><span class="tag tag-nodue">12 no due date</span></td></tr>
+            <tr><td>Accelerate MLOps Capabilities</td><td class="k">TechDMA</td><td>12</td><td><span class="tag tag-nodue">12 no due date</span></td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="subpage" id="ex-stories">
+        <input class="search" placeholder="Search stories...">
+        <div class="chip-row">
+          <div class="chip active">All</div><div class="chip">No due date</div><div class="chip">Stale &gt; 7d</div>
+        </div>
+        <div class="card">
+          <table>
+            <tr><th>Story</th><th>Epic</th><th>Feature</th><th>Status</th><th>Sub-tasks</th></tr>
+            <tr><td><b>Domino Maintenance/Patching Automations</b><br><span class="k">ETSDMA003-112</span></td><td class="k">ETSDMA-2345</td><td class="k">Optimize Ops for Domino Data Lab</td><td><span class="status-pill p-risk">WIP</span></td><td>7</td></tr>
+          </table>
+          <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--line);">
+            <table>
+              <tr><th>Sub-task</th><th>Status</th><th>Assignee</th><th>Days in status</th><th>Due date</th></tr>
+              <tr><td>Design &amp; Planning</td><td><span class="status-pill p-rejected">Backlog</span></td><td>S. Reddy (Contractor)</td><td><span class="tag-stale">14d</span></td><td class="k">No due date</td></tr>
+              <tr><td>Pre-Checks Implementation</td><td><span class="status-pill p-rejected">Backlog</span></td><td>S. Iyer (Contractor)</td><td><span class="tag-stale">14d</span></td><td class="k">No due date</td></tr>
+              <tr><td>Patching Pipeline</td><td><span class="status-pill p-rejected">Backlog</span></td><td>S. Iyer (Contractor)</td><td><span class="tag-stale">14d</span></td><td class="k">No due date</td></tr>
+            </table>
+            <button class="btn btn-primary" style="margin-top:10px;">Open in Jira</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= BY PERSON ================= -->
+    <div class="page" id="page-byperson">
+      <h1 class="pt">By Person</h1>
+      <p class="pd">See who is working on what — and how long it's actually taken. WIP limit: 3 active stories per person.</p>
+      <input class="search" placeholder="Search people...">
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;">
+          <div style="font-size:14px;font-weight:700;">Nina Volkov <span class="k" style="font-weight:400;">· ML engineer</span></div>
+          <div class="k">35 stories · 25 active</div>
+        </div>
+        <div class="stat-row" style="grid-template-columns:repeat(6,1fr);margin-bottom:14px;">
+          <div class="stat-card"><div class="stat-num" style="font-size:16px;" class="wip-over">4 / 3</div><div class="stat-label">WIP (over limit)</div></div>
+          <div class="stat-card"><div class="stat-num" style="font-size:16px;">9</div><div class="stat-label">Planned</div></div>
+          <div class="stat-card"><div class="stat-num" style="font-size:16px;">1</div><div class="stat-label">Blocked</div></div>
+          <div class="stat-card"><div class="stat-num" style="font-size:16px;">0</div><div class="stat-label">Overdue</div></div>
+          <div class="stat-card"><div class="stat-num" style="font-size:16px;">34</div><div class="stat-label">No due date</div></div>
+          <div class="stat-card"><div class="stat-num" style="font-size:15px;">Not tracked</div><div class="stat-label">Story points</div></div>
+        </div>
+        <table>
+          <tr><th>Story</th><th>Feature</th><th>Status</th><th>Days in status</th><th>Last activity</th><th>Flag</th></tr>
+          <tr><td>SageMaker cost anomaly alerts</td><td class="k">Enable Advanced Features for SageMaker</td><td><span class="status-pill p-risk">WIP</span></td><td>11d</td><td>2d ago</td><td><span class="tag-stale">Stale</span></td></tr>
+          <tr><td>Endpoint budget threshold config</td><td class="k">Enable Advanced Features for SageMaker</td><td><span class="status-pill p-risk">WIP</span></td><td>3d</td><td>today</td><td>—</td></tr>
+          <tr><td>MLflow serverless rollout</td><td class="k">Unmapped</td><td><span class="status-pill p-risk">WIP</span></td><td>18d</td><td>9d ago</td><td><span class="tag-stale">Stale</span></td></tr>
+          <tr><td>Model registry access review</td><td class="k">Manage Data Vulnerabilities</td><td><span class="status-pill p-rejected">Blocked</span></td><td>6d</td><td>6d ago</td><td>—</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- ================= CAPACITY ================= -->
+    <div class="page" id="page-capacity">
+      <h1 class="pt">Capacity</h1>
+      <p class="pd">Allocation across all 15 resources — change work, run work, and headroom.</p>
+      <div class="tabs">
+        <div class="tab active" data-sub="cap-current" data-group="capacity">Current</div>
+        <div class="tab" data-sub="cap-trends" data-group="capacity">Trends</div>
+      </div>
+      <div class="subpage active" id="cap-current">
+        <div class="card">
+          <table>
+            <tr><th>Resource</th><th>Working on</th><th>Change</th><th>Run</th><th>WIP</th><th>Utilization</th></tr>
+            <tr><td><b>Raj Patel</b><br><span class="k">Data engineer</span></td><td>Databricks onboarding</td><td>70%</td><td>25%</td><td class="wip-ok">2 / 3</td><td>95%</td></tr>
+            <tr><td><b>Nina Volkov</b><br><span class="k">ML engineer</span></td><td>SageMaker cost governance</td><td>65%</td><td>40%</td><td class="wip-over">4 / 3</td><td>105%</td></tr>
+            <tr><td><b>Sarah Kim</b><br><span class="k">Platform admin</span></td><td>Posit upgrade</td><td>55%</td><td>20%</td><td class="wip-ok">2 / 3</td><td>75%</td></tr>
+            <tr><td><b>David Cho</b><br><span class="k">MLOps engineer</span></td><td>INC on-call</td><td>20%</td><td>75%</td><td class="wip-ok">1 / 3</td><td>95%</td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="subpage" id="cap-trends">
+        <div class="grid2">
+          <div class="card">
+            <h3>Average cycle time by week (days)</h3>
+            <div style="display:flex;align-items:flex-end;gap:8px;height:70px;">
+              <div style="flex:1;background:var(--blue-soft);height:50%;border-radius:3px 3px 0 0;"></div>
+              <div style="flex:1;background:var(--blue-soft);height:58%;border-radius:3px 3px 0 0;"></div>
+              <div style="flex:1;background:var(--blue-soft);height:40%;border-radius:3px 3px 0 0;"></div>
+              <div style="flex:1;background:var(--blue);height:75%;border-radius:3px 3px 0 0;"></div>
+              <div style="flex:1;background:var(--blue-soft);height:45%;border-radius:3px 3px 0 0;"></div>
+              <div style="flex:1;background:var(--blue);height:80%;border-radius:3px 3px 0 0;"></div>
+            </div>
+            <div class="k" style="margin-top:8px;">Weeks 4 and 6 trending up — check WIP limits that week</div>
+          </div>
+          <div class="card">
+            <h3>Team WIP over time</h3>
+            <div style="display:flex;align-items:flex-end;gap:8px;height:70px;">
+              <div style="flex:1;background:var(--change-bg);height:45%;border-radius:3px 3px 0 0;"></div>
+              <div style="flex:1;background:var(--change-bg);height:50%;border-radius:3px 3px 0 0;"></div>
+              <div style="flex:1;background:var(--red-soft);height:70%;border-radius:3px 3px 0 0;"></div>
+              <div style="flex:1;background:var(--red-soft);height:78%;border-radius:3px 3px 0 0;"></div>
+              <div style="flex:1;background:var(--change-bg);height:48%;border-radius:3px 3px 0 0;"></div>
+              <div style="flex:1;background:var(--red-soft);height:65%;border-radius:3px 3px 0 0;"></div>
+            </div>
+            <div class="k" style="margin-top:8px;">Red = weeks where team-wide WIP exceeded limits</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= ROADMAP ================= -->
+    <div class="page" id="page-roadmap">
+      <h1 class="pt">Roadmap</h1>
+      <p class="pd">Idea → committed → linked to a Jira epic. Items don't need to exist in Jira yet to be planned.</p>
+      <div class="tabs">
+        <div class="tab active" data-sub="rm-board" data-group="roadmap">Board</div>
+        <div class="tab" data-sub="rm-extract" data-group="roadmap">Log work</div>
+        <div class="tab" data-sub="rm-manage" data-group="roadmap">Roadmap Management</div>
+        <div class="tab" data-sub="rm-exec" data-group="roadmap">Executive view</div>
+      </div>
+      <div class="subpage active" id="rm-board">
+        <div class="kanban">
+          <div class="kcol">
+            <h4>Idea <span class="n">4</span></h4>
+            <div class="kcard"><div class="title">Vendor-driven: Databricks Unity Catalog eval</div><div class="meta"><span class="src-tag">Vendor</span><span class="qtr-chip">Q2 2027</span></div></div>
+            <div class="kcard"><div class="title">GPU cost showback for SageMaker training jobs</div><div class="meta"><span class="src-tag">Internal research</span><span class="qtr-chip">Q2 2027</span></div></div>
+          </div>
+          <div class="kcol">
+            <h4>Committed <span class="n">3</span></h4>
+            <div class="kcard"><div class="title">Posit Assistant rollout in RStudio Pro</div><div class="meta"><span class="src-tag">Internal research</span><span class="qtr-chip">Q1 2027</span></div></div>
+            <div class="kcard"><div class="title">Model governance intake automation</div><div class="meta"><span class="src-tag">Customer</span><span class="qtr-chip">Q1 2027</span></div></div>
+          </div>
+          <div class="kcol">
+            <h4>Linked to epic <span class="n">7</span></h4>
+            <div class="kcard"><div class="title">TechDMA: Model Transformation</div><div class="meta"><span class="src-tag">Existing epic</span><span class="epic-link" style="font-size:11px;">FMEPIC-3960</span></div></div>
+            <div class="kcard"><div class="title">Analytics &amp; ML Platform Enhancement and Customer Enablement</div><div class="meta"><span class="src-tag">Existing epic</span><span class="epic-link" style="font-size:11px;">FMEPIC-4554</span></div></div>
+            <div class="kcard"><div class="title">Reduce Technical Debt and Optimize Platforms</div><div class="meta"><span class="src-tag">Existing epic</span><span class="epic-link" style="font-size:11px;">FMEPIC-4083</span></div></div>
+            <div class="kcard" style="color:var(--ink-faint);font-size:11.5px;border-style:dashed;">+ 4 more existing epics (CDO KTLO, Data Vulnerabilities, Model Transformation delivery, CSEO)</div>
+          </div>
+        </div>
+      </div>
+      <div class="subpage" id="rm-extract">
+        <div class="card" style="margin-bottom:16px;">
+          <h3>Describe what you're about to work on</h3>
+          <textarea style="width:100%;min-height:90px;border:1px solid var(--line);border-radius:6px;padding:10px 12px;font-size:12.5px;font-family:inherit;" placeholder="e.g. We need to retire the legacy Posit infra in EDSS/DS2.0 and move the Connect publishing workflow to GitLab CI/CD..."></textarea>
+          <button class="btn btn-primary" style="margin-top:10px;">Draft story &amp; roadmap placement</button>
+        </div>
+        <div class="card">
+          <h3>Review before creating — one confirmation, both created together</h3>
+          <div class="intake-row">
+            <div class="intake-head">
+              <div class="intake-title">Retire legacy Posit infrastructure in EDSS/DS2.0</div>
+              <span class="status-pill p-new">Draft</span>
+            </div>
+            <div class="eval-box">
+              <h5>Jira story</h5>
+              Acceptance criteria: infra fully decommissioned; no active workloads remain on legacy resources; access removed from IAM
+              <h5>Suggested sub-tasks</h5>
+              Inventory remaining workloads · Migrate last dependencies · Decommission &amp; remove access
+              <h5>Roadmap placement</h5>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;">
+                <select style="font-size:12px;padding:5px 8px;border:1px solid var(--line);border-radius:5px;"><option>Product: Posit</option></select>
+                <select style="font-size:12px;padding:5px 8px;border:1px solid var(--line);border-radius:5px;"><option>Category: Retire legacy &amp; upgrade for compliance</option></select>
+                <select style="font-size:12px;padding:5px 8px;border:1px solid var(--line);border-radius:5px;"><option>Horizon: Q1–Q2 2026</option></select>
+                <select style="font-size:12px;padding:5px 8px;border:1px solid var(--line);border-radius:5px;"><option>Status: Planned</option></select>
+              </div>
+            </div>
+            <div style="margin-top:10px;display:flex;gap:8px;">
+              <button class="btn btn-approve">Create story &amp; add to roadmap</button>
+              <button class="btn btn-reject">Edit first</button>
+              <button class="btn btn-reject">Discard</button>
+            </div>
+          </div>
+        </div>
+        <div class="card" style="margin-top:14px;background:transparent;border-style:dashed;">
+          <span class="k">Product and Category are pre-filled from the description and your existing roadmap categories — override either if the match is wrong. New category names are allowed; they just show up as a new group next time.</span>
+        </div>
+      </div>
+      <div class="subpage" id="rm-exec">
+        <div class="exec-head">
+          <div>
+            <h3 style="margin:0;font-size:15px;">Posit &amp; Anaconda roadmap<span class="platform-chip">Posit</span><span class="platform-chip">Anaconda</span></h3>
+            <div class="k" style="margin-top:4px;">One of these per platform group — same layout as your current deck, generated instead of hand-built.</div>
+          </div>
+        </div>
+
+        <div class="exec-checklist">
+          <div>
+            <h5>Posit</h5>
+            <ul class="chk-list">
+              <li><span class="chk-box done"></span>Retire/decommission legacy Posit infra resources (EDSS/DS2.0)</li>
+              <li><span class="chk-box inprog"></span>Transition Posit Connect publishing workflows to GitLab CI/CD</li>
+              <li><span class="chk-box inprog"></span>Upgrade Posit Workbench &amp; container images for EOL/security</li>
+              <li><span class="chk-box planned"></span>Analyze and optimize EKS cluster compute for cost efficiency</li>
+              <li><span class="chk-box planned"></span>Evaluate Gen AI opportunities for Posit</li>
+            </ul>
+          </div>
+          <div>
+            <h5>Anaconda</h5>
+            <ul class="chk-list">
+              <li><span class="chk-box inprog"></span>Upgrade Anaconda Package Manager software for EOL</li>
+              <li><span class="chk-box planned"></span>Migrate infra/software provisioning to GitLab/TFE</li>
+              <li><span class="chk-box planned"></span>Enhance license compliance &amp; usage tracking</li>
+              <li><span class="chk-box planned"></span>Host monthly Analytics User Forum</li>
+              <li><span class="chk-box planned"></span>Modernize analytics containers via UTSS</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="exec-arrow">
+          <div class="arrow-seg seg-first">Q1 – Q2 2026</div>
+          <div class="arrow-seg seg-last">Q3 2026</div>
+          <div class="milestone">&#9670;</div>
+        </div>
+
+        <div class="exec-detail">
+          <div>
+            <div class="exec-cat open">
+              <h5 class="cat-head"><span class="cat-chev">&#8250;</span>Transform R/Posit tools to EKS <span class="cat-sum">3 items · 2 in progress</span></h5>
+              <ul class="dot-list">
+                <li><span class="dot inprog"></span>Migrate users &amp; apps from legacy platform to EDSS EKS</li>
+                <li><span class="dot inprog"></span>Implement CI/CD for Posit Connect via GitLab pipelines</li>
+                <li><span class="dot planned"></span>Deploy Posit Connect in ERSS Prod</li>
+              </ul>
+            </div>
+            <div class="exec-cat">
+              <h5 class="cat-head"><span class="cat-chev">&#8250;</span>Retire legacy &amp; upgrade for compliance <span class="cat-sum">2 items · 1 done</span></h5>
+              <ul class="dot-list">
+                <li><span class="dot done"></span>Retire legacy Posit infrastructure in EDSS/DS2.0</li>
+                <li><span class="dot inprog"></span>Upgrade Workbench/Connect/Package Manager images</li>
+              </ul>
+            </div>
+          </div>
+          <div>
+            <div class="exec-cat">
+              <h5 class="cat-head"><span class="cat-chev">&#8250;</span>Anaconda Package Manager <span class="cat-sum">2 items · completed</span></h5>
+              <ul class="dot-list">
+                <li><span class="dot done"></span>Upgrade Package Manager software for EOL</li>
+                <li><span class="dot done"></span>Migrate infra provisioning to GitLab/TFE</li>
+              </ul>
+            </div>
+            <div class="exec-cat">
+              <h5 class="cat-head"><span class="cat-chev">&#8250;</span>Analytics User Forum &amp; Training <span class="cat-sum">2 items · 1 in progress</span></h5>
+              <ul class="dot-list">
+                <li><span class="dot inprog"></span>Host monthly Analytics User Forum</li>
+                <li><span class="dot planned"></span>Run Posit tools training workshop day</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="exec-footer">
+          <div class="exec-legend">
+            <span><span class="dot done"></span>Completed</span>
+            <span><span class="dot inprog"></span>In progress</span>
+            <span><span class="dot planned"></span>Planned</span>
+            <span>&#9670; Milestone</span>
+          </div>
+          <div class="exec-tags">
+            <span class="tag-chip">Automation &amp; upgrades</span>
+            <span class="tag-chip">Security &amp; compliance</span>
+            <span class="tag-chip">Cost optimization</span>
+            <span class="tag-chip">User enablement</span>
+          </div>
+        </div>
+
+        <div style="margin-top:16px;display:flex;gap:8px;">
+          <button class="btn btn-primary">Download as PNG</button>
+          <button class="btn btn-reject">Download as PowerPoint</button>
+        </div>
+      </div>
+
+      <div class="subpage" id="rm-manage">
+        <p class="k" style="margin-bottom:16px;">Going forward, new work gets placed on the roadmap automatically via Log work. This tab is for the backlog that predates that — stories already in Jira that nobody tagged with a product, category, or horizon yet.</p>
+
+        <div class="card" style="margin-bottom:18px;">
+          <h3>Needs assignment — existing stories, not yet on the roadmap</h3>
+          <div class="story-chip-row" style="border-bottom:1px solid var(--line);padding:10px 0;">
+            <span><span class="jk">ETSDMA003-925</span>Roll out MLFlow serverless in Prod via Service Catalog</span>
+            <div style="display:flex;gap:6px;">
+              <select style="font-size:11.5px;padding:4px 7px;border:1px solid var(--line);border-radius:5px;"><option>Product...</option></select>
+              <select style="font-size:11.5px;padding:4px 7px;border:1px solid var(--line);border-radius:5px;"><option>Category...</option></select>
+              <select style="font-size:11.5px;padding:4px 7px;border:1px solid var(--line);border-radius:5px;"><option>Horizon...</option></select>
+              <button class="btn btn-primary" style="padding:4px 10px;">Assign</button>
+            </div>
+          </div>
+          <div class="story-chip-row" style="padding:10px 0;">
+            <span><span class="jk">ETSDMA003-27</span>SageMaker Pre-sign URL Integration with JIT</span>
+            <div style="display:flex;gap:6px;">
+              <select style="font-size:11.5px;padding:4px 7px;border:1px solid var(--line);border-radius:5px;"><option>Product...</option></select>
+              <select style="font-size:11.5px;padding:4px 7px;border:1px solid var(--line);border-radius:5px;"><option>Category...</option></select>
+              <select style="font-size:11.5px;padding:4px 7px;border:1px solid var(--line);border-radius:5px;"><option>Horizon...</option></select>
+              <button class="btn btn-primary" style="padding:4px 10px;">Assign</button>
+            </div>
+          </div>
+        </div>
+
+        <h3 style="font-size:12.5px;color:var(--ink-soft);margin:0 0 10px;">Already placed — adjust if needed</h3>
+
+        <div class="map-row open">
+          <div class="map-head">
+            <div>
+              <div class="map-title">Transform R/Posit tools to EKS</div>
+              <div class="map-sub">3 linked stories</div>
+            </div>
+            <div class="map-status">
+              <div class="progress-mini"><div style="width:66%;"></div></div>
+              <span class="status-pill p-eval">In progress (2/3 done)</span>
+            </div>
+          </div>
+          <div class="map-body">
+            <div class="story-chip-row"><span><span class="jk">ETSDMA003-14</span>Git-backed Connect polling for git repos</span><span class="status-pill p-approved">Done</span></div>
+            <div class="story-chip-row"><span><span class="jk">ETSDMA003-567</span>Migrate app deployment from UCD/Jenkins to GitLab CI/CD</span><span class="status-pill p-approved">Done</span></div>
+            <div class="story-chip-row"><span><span class="jk">ETSDMA003-568</span>Migrate Posit Connect publishing to GitLab CI/CD</span><span class="status-pill p-eval">WIP</span></div>
+            <div class="link-more"><input placeholder="Search stories to link, e.g. ETSDMA003-..."><button class="btn btn-primary">Link</button></div>
+          </div>
+        </div>
+
+        <div class="map-row">
+          <div class="map-head">
+            <div>
+              <div class="map-title">Retire legacy &amp; upgrade for compliance</div>
+              <div class="map-sub">2 linked stories</div>
+            </div>
+            <div class="map-status">
+              <div class="progress-mini"><div style="width:50%;"></div></div>
+              <span class="status-pill p-eval">In progress (1/2 done)</span>
+            </div>
+          </div>
+          <div class="map-body">
+            <div class="story-chip-row"><span><span class="jk">ETSDMA003-561</span>Retire/decommission legacy Posit infra in EDSS/DS2.0</span><span class="status-pill p-approved">Done</span></div>
+            <div class="story-chip-row"><span><span class="jk">ETSDMA003-570</span>Deploy upgraded Workbench session images</span><span class="status-pill p-eval">WIP</span></div>
+            <div class="link-more"><input placeholder="Search stories to link, e.g. ETSDMA003-..."><button class="btn btn-primary">Link</button></div>
+          </div>
+        </div>
+
+        <div class="map-row">
+          <div class="map-head">
+            <div>
+              <div class="map-title">Anaconda Package Manager</div>
+              <div class="map-sub">2 linked stories</div>
+            </div>
+            <div class="map-status">
+              <div class="progress-mini"><div style="width:100%;"></div></div>
+              <span class="status-pill p-approved">Completed (2/2 done)</span>
+            </div>
+          </div>
+          <div class="map-body">
+            <div class="story-chip-row"><span><span class="jk">ETSDMA003-554</span>Anaconda Package Manager — upgrade to latest in ACPT-UTSS</span><span class="status-pill p-approved">Done</span></div>
+            <div class="story-chip-row"><span><span class="jk">ETSDMA003-555</span>Anaconda Package Manager — upgrade to latest in PROD-UTSS</span><span class="status-pill p-approved">Done</span></div>
+            <div class="link-more"><input placeholder="Search stories to link, e.g. ETSDMA003-..."><button class="btn btn-primary">Link</button></div>
+          </div>
+        </div>
+
+        <div class="map-row" style="border-color:var(--amber);background:var(--amber-soft);">
+          <div class="map-head">
+            <div>
+              <div class="map-title">Analytics User Forum &amp; Training</div>
+              <div class="map-sub">0 linked stories — status can't be computed yet</div>
+            </div>
+            <div class="map-status">
+              <span class="status-pill p-new">Unmapped</span>
+            </div>
+          </div>
+          <div class="map-body">
+            <div class="link-more"><input placeholder="Search stories to link, e.g. ETSDMA003-..."><button class="btn btn-primary">Link</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= CUSTOMER INTAKE ================= -->
+    <div class="page" id="page-intake">
+      <h1 class="pt">Customer Intake</h1>
+      <p class="pd">Requests come in as plain language; GenAI drafts the technical evaluation before the program team decides.</p>
+      <div class="stat-row" style="grid-template-columns:repeat(4,1fr);">
+        <div class="stat-card"><div class="stat-num">4</div><div class="stat-label">New</div></div>
+        <div class="stat-card"><div class="stat-num">3</div><div class="stat-label">Under evaluation</div></div>
+        <div class="stat-card"><div class="stat-num">6</div><div class="stat-label">Approved this quarter</div></div>
+        <div class="stat-card"><div class="stat-num">2</div><div class="stat-label">Rejected this quarter</div></div>
+      </div>
+      <div class="chatbox" style="margin-bottom:18px;">
+        <div class="chat-head">New intake — describe the request</div>
+        <div class="chat-input"><input placeholder="e.g. Customer wants automated model drift alerts on production SageMaker endpoints..."><button>Submit</button></div>
+      </div>
+      <div class="intake-row">
+        <div class="intake-head">
+          <div class="intake-title">Automated model drift alerts on production endpoints</div>
+          <span class="status-pill p-eval">Under evaluation</span>
+        </div>
+        <div class="intake-meta">Requested by Customer Analytics Team · Sep 3, 2026 · Category: Monitoring</div>
+        <div class="eval-box">
+          <h5>Feasibility</h5>
+          Feasible with existing SageMaker Model Monitor; no new infra required.
+          <h5>Effort (rough order of magnitude)</h5>
+          Medium — est. 1 sprint for one engineer
+          <h5>Dependencies</h5>
+          Requires baseline data capture already enabled on target endpoints
+          <h5>Risks</h5>
+          Alert fatigue if thresholds aren't tuned per model
+        </div>
+        <div style="margin-top:10px;display:flex;gap:8px;">
+          <button class="btn btn-approve">Approve</button>
+          <button class="btn btn-reject">Needs more info</button>
+          <button class="btn btn-reject">Reject</button>
+        </div>
+      </div>
+      <div class="intake-row">
+        <div class="intake-head">
+          <div class="intake-title">Bulk export of Posit Connect usage reports</div>
+          <span class="status-pill p-new">New</span>
+        </div>
+        <div class="intake-meta">Requested by Risk Reporting Team · Sep 8, 2026 · Category: Reporting</div>
+      </div>
+    </div>
+
+    <!-- ================= CUSTOMER SUPPORT ================= -->
+    <div class="page" id="page-support">
+      <h1 class="pt">Customer Support</h1>
+      <p class="pd">Run work — INC / ITSR.</p>
+      <div class="placeholder-card">
+        <div style="font-size:14px;font-weight:600;margin-bottom:6px;color:var(--ink);">Coming next, after Capacity</div>
+        <div style="font-size:12.5px;max-width:440px;margin:0 auto;">
+          Held until the INC/ITSR data source is confirmed. Covers the subset of the team who rotate through support —
+          not all 15 — so capacity math here won't assume load is spread evenly across the group.
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= ASK THE DATA ================= -->
+    <div class="page" id="page-ask">
+      <h1 class="pt">Ask the Data</h1>
+      <p class="pd">Query the portfolio in plain language, or create new work the same way.</p>
+      <div class="tabs">
+        <div class="tab active" data-sub="ask-ask" data-group="ask">Ask</div>
+        <div class="tab" data-sub="ask-create" data-group="ask">Create</div>
+      </div>
+      <div class="subpage active" id="ask-ask">
+        <div class="chatbox">
+          <div class="chat-head">Team data assistant</div>
+          <div class="chat-body">
+            <div class="bubble user">Which resources are over WIP limit this sprint?</div>
+            <div class="bubble bot">Nina Volkov (4/3) is the only one over limit right now, driven by SageMaker cost governance plus one unmapped MLflow story.</div>
+          </div>
+          <div class="chat-input"><input placeholder="Ask about capacity, epics, or run work..."><button>Send</button></div>
+        </div>
+      </div>
+      <div class="subpage" id="ask-create">
+        <div class="card" style="margin-bottom:16px;">
+          <h3>Quick sub-task</h3>
+          <div class="quicktask">
+            <input placeholder="Sub-task name...">
+            <select><option>Assign to...</option><option>Me</option><option>Raj Patel</option><option>Nina Volkov</option></select>
+            <button class="btn btn-primary">Add</button>
+          </div>
+        </div>
+        <div class="card">
+          <h3>New story</h3>
+          <div class="chat-input" style="border-top:none;padding:0 0 14px;">
+            <input placeholder="Describe what's needed, in plain language...">
+            <button class="btn btn-primary">Draft</button>
+          </div>
+          <div class="draft-field"><div class="lbl">Title</div><div class="val">SageMaker endpoint budget alert</div></div>
+          <div class="draft-field"><div class="lbl">Suggested epic</div><div class="val epic-link">Analytics &amp; ML Platform Enhancement (FMEPIC-4554)</div></div>
+          <div class="draft-field"><div class="lbl">Acceptance criteria</div><div class="val">
+            <ul class="ac">
+              <li>Given a configured budget threshold, when spend crosses it, an alert fires within 15 minutes</li>
+              <li>Given no threshold is set, the endpoint is excluded from alerting without erroring</li>
+            </ul>
+          </div></div>
+          <div class="draft-field"><div class="lbl">Suggested sub-tasks</div><div class="val">Set budget config · Build alert trigger · Add Slack notification</div></div>
+          <button class="btn btn-primary">Create in Jira</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= ADMIN ================= -->
+    <div class="page" id="page-admin">
+      <h1 class="pt">Admin</h1>
+      <p class="pd">Tool configuration, exports, data quality, and alerts.</p>
+      <div class="tabs">
+        <div class="tab active" data-sub="ad-jira" data-group="admin">JIRA Management</div>
+        <div class="tab" data-sub="ad-export" data-group="admin">Export &amp; Reports</div>
+        <div class="tab" data-sub="ad-quality" data-group="admin">Data Quality</div>
+        <div class="tab" data-sub="ad-notify" data-group="admin">Notifications</div>
+      </div>
+
+      <div class="subpage active" id="ad-jira">
+        <div class="card">
+          <h3>Board sync</h3>
+          <table>
+            <tr><th>Board</th><th>Sync frequency</th><th>Last synced</th></tr>
+            <tr><td>ETSDMA003</td><td>Every 4 hours</td><td>2026-09-11 06:40</td></tr>
+            <tr><td>FMEPIC</td><td>Every 4 hours</td><td>2026-09-11 06:40</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="subpage" id="ad-export">
+        <div class="grid2">
+          <div class="export-card">
+            <h4>Weekly highlights</h4>
+            <p>Auto-drafted from this week's changes — completed stories, newly started epics, new blockers, status flips.</p>
+            <ul><li>3 stories completed</li><li>2 epics newly started</li><li>1 new blocker (Nina Volkov)</li></ul>
+            <button class="btn btn-primary">Download PPT</button>
+          </div>
+          <div class="export-card">
+            <h4>PI planning deck</h4>
+            <p>Current-quarter progress, next-quarter roadmap items, and intake status — for the customer-facing PI session.</p>
+            <ul><li>Current PI: 64% delivered</li><li>6 roadmap items for next quarter</li><li>3 intake items pending decision</li></ul>
+            <button class="btn btn-primary">Download PPT</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="subpage" id="ad-quality">
+        <div class="card">
+          <h3>Needs classification</h3>
+          <div class="quality-row"><b>Roll out MLFlow serverless in Prod via Service Catalog</b> — missing WAF and Run/Change <span class="k">ETSDMA003-925</span></div>
+          <div class="quality-row" style="margin-top:8px;"><b>8 stories</b> — no epic mapping (Unmapped bucket)</div>
+        </div>
+      </div>
+
+      <div class="subpage" id="ad-notify">
+        <div class="card">
+          <div class="toggle-row"><div><div class="tt">Daily stale-item digest</div><div class="td">Slack message with anything untouched 5+ days</div></div><div class="switch on"><div class="dot2"></div></div></div>
+          <div class="toggle-row"><div><div class="tt">WIP-limit breach alert</div><div class="td">Notify when someone exceeds their WIP limit</div></div><div class="switch on"><div class="dot2"></div></div></div>
+          <div class="toggle-row"><div><div class="tt">Weekly highlights auto-send</div><div class="td">Email the drafted highlights every Friday</div></div><div class="switch"><div class="dot2"></div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= SPRINT BOARD (ALT VIEW) ================= -->
+    <div class="page" id="page-sprintboard">
+      <div class="sb-head-row">
+        <div>
+          <h1 class="pt">Sprint 12: Sep 9 – Sep 20, 2026</h1>
+          <p class="pd">Sprint goal: complete the agreed MLOps production-readiness deliverables.</p>
+        </div>
+        <div class="sb-head-actions">
+          <select class="sb-select"><option>Sprint 12 (Sep 9 – Sep 20, 2026)</option></select>
+          <button class="sb-btn-create">+ Create Story</button>
+        </div>
+      </div>
+
+      <div class="sb-stat-row">
+        <div class="sb-stat"><div class="n">12</div><div class="l">Committed</div></div>
+        <div class="sb-stat"><div class="n">5</div><div class="l">In progress</div></div>
+        <div class="sb-stat"><div class="n">2</div><div class="l">In review</div></div>
+        <div class="sb-stat"><div class="n">4</div><div class="l">Done</div></div>
+        <div class="sb-stat blocked"><div class="n">2</div><div class="l">Blocked</div></div>
+        <div class="sb-stat"><div class="n">3</div><div class="l">Due this week</div></div>
+      </div>
+
+      <div class="sb-filter-row">
+        <select><option>Team member: All</option></select>
+        <select><option>Platform / product: All</option></select>
+        <select><option>Status: All</option></select>
+        <label class="sb-chk"><input type="checkbox"> At risk only</label>
+        <input class="sb-search" placeholder="Search stories or subtasks...">
+        <div class="sb-grp">Group by: <select><option>Story</option></select> · Expand all</div>
+      </div>
+
+      <h2 class="sb-sec">Sprint stories (12)</h2>
+      <table>
+        <tr><th style="width:24px;"></th><th>Key</th><th>Story / deliverable</th><th>Owner</th><th>Status</th><th>Due date</th><th>Blocker / decision needed</th><th>Last update</th></tr>
+
+        <tr class="sb-story-row" data-target="sb-sub-1209">
+          <td><span class="sb-chev open">›</span></td>
+          <td>ACOE-1209</td>
+          <td><div class="sb-story-name">Model registry production readiness</div><div class="sb-story-sub">Enable model registration and artifact handoff for production</div></td>
+          <td><div class="sb-who"><span class="sb-avatar" style="background:#2554E8;">KA</span>Kal</div></td>
+          <td><span class="sb-pill sb-pill-inprogress">In Progress</span></td>
+          <td>Sep 12, 2026</td>
+          <td class="sb-blocker-text">Service identity decision</td>
+          <td>Sep 9, 2026</td>
+        </tr>
+        <tr class="sb-subtask-block" id="sb-sub-1209">
+          <td colspan="8">
+            <div class="sb-subtask-inner">
+              <table>
+                <tr><th>Key</th><th>Subtask</th><th>Owner</th><th>Status</th><th>Due date</th></tr>
+                <tr><td>ACOE-1210</td><td>Define artifact handoff requirements</td><td><div class="sb-who"><span class="sb-avatar" style="background:#2554E8;">KA</span>Kal</div></td><td><span class="sb-pill sb-pill-done">Done</span></td><td>Sep 8, 2026</td></tr>
+                <tr><td>ACOE-1211</td><td>Configure service identity</td><td><div class="sb-who"><span class="sb-avatar" style="background:#7C3AED;">KE</span>Kevin</div></td><td><span class="sb-pill sb-pill-inprogress">In Progress</span></td><td>Sep 11, 2026</td></tr>
+                <tr><td>ACOE-1212</td><td>Execute deployment test</td><td><div class="sb-who"><span class="sb-avatar" style="background:#D97706;">RI</span>Ritika</div></td><td><span class="sb-pill sb-pill-ready">Ready</span></td><td>Sep 12, 2026</td></tr>
+                <tr><td>ACOE-1213</td><td>Capture evidence and close findings</td><td><div class="sb-who"><span class="sb-avatar" style="background:#2554E8;">KA</span>Kal</div></td><td><span class="sb-pill sb-pill-ready">Ready</span></td><td>Sep 15, 2026</td></tr>
+              </table>
+            </div>
+          </td>
+        </tr>
+
+        <tr class="sb-story-row" data-target="sb-sub-0446">
+          <td><span class="sb-chev">›</span></td>
+          <td>ACOE-0446</td>
+          <td><div class="sb-story-name">Posit Assistant enablement</div></td>
+          <td><div class="sb-who"><span class="sb-avatar" style="background:#7C3AED;">KE</span>Kevin</div></td>
+          <td><span class="sb-pill sb-pill-blocked">Blocked</span></td>
+          <td>Sep 11, 2026</td>
+          <td class="sb-blocker-text">Provider access approval</td>
+          <td>Sep 9, 2026</td>
+        </tr>
+        <tr class="sb-subtask-block" id="sb-sub-0446" style="display:none;"><td colspan="8"><div class="sb-subtask-inner"><span class="sb-blocker-none">No subtasks shown in this mockup</span></div></td></tr>
+
+        <tr class="sb-story-row" data-target="sb-sub-0789">
+          <td><span class="sb-chev">›</span></td>
+          <td>ACOE-0789</td>
+          <td><div class="sb-story-name">Model monitoring framework</div></td>
+          <td><div class="sb-who"><span class="sb-avatar" style="background:#059669;">JT</span>John</div></td>
+          <td><span class="sb-pill sb-pill-inprogress">In Progress</span></td>
+          <td>Sep 16, 2026</td>
+          <td class="sb-blocker-text">Define alert thresholds</td>
+          <td>Sep 9, 2026</td>
+        </tr>
+        <tr class="sb-subtask-block" id="sb-sub-0789" style="display:none;"><td colspan="8"><div class="sb-subtask-inner"><span class="sb-blocker-none">No subtasks shown in this mockup</span></div></td></tr>
+
+        <tr class="sb-story-row" data-target="sb-sub-0334">
+          <td><span class="sb-chev">›</span></td>
+          <td>ACOE-0334</td>
+          <td><div class="sb-story-name">Gen-AI capabilities on Posit platform</div></td>
+          <td><div class="sb-who"><span class="sb-avatar" style="background:#D97706;">KC</span>Karuna</div></td>
+          <td><span class="sb-pill sb-pill-inprogress">In Progress</span></td>
+          <td>Sep 12, 2026</td>
+          <td class="sb-blocker-text">AWS product guidance</td>
+          <td>Sep 9, 2026</td>
+        </tr>
+        <tr class="sb-subtask-block" id="sb-sub-0334" style="display:none;"><td colspan="8"><div class="sb-subtask-inner"><span class="sb-blocker-none">No subtasks shown in this mockup</span></div></td></tr>
+
+        <tr class="sb-story-row" data-target="sb-sub-0812">
+          <td><span class="sb-chev">›</span></td>
+          <td>ACOE-0812</td>
+          <td><div class="sb-story-name">Jira analytics dashboard enhancements</div></td>
+          <td><div class="sb-who"><span class="sb-avatar" style="background:#DC2626;">DW</span>David</div></td>
+          <td><span class="sb-pill sb-pill-ready">Ready</span></td>
+          <td>Sep 18, 2026</td>
+          <td class="sb-blocker-text sb-blocker-none">None</td>
+          <td>Sep 8, 2026</td>
+        </tr>
+        <tr class="sb-subtask-block" id="sb-sub-0812" style="display:none;"><td colspan="8"><div class="sb-subtask-inner"><span class="sb-blocker-none">No subtasks shown in this mockup</span></div></td></tr>
+
+        <tr class="sb-story-row" data-target="sb-sub-0062">
+          <td><span class="sb-chev">›</span></td>
+          <td>ACOE-0062</td>
+          <td><div class="sb-story-name">SageMaker Studio upgrade</div></td>
+          <td><div class="sb-who"><span class="sb-avatar" style="background:#0891B2;">RP</span>Raj</div></td>
+          <td><span class="sb-pill sb-pill-review">In Review</span></td>
+          <td>Sep 15, 2026</td>
+          <td class="sb-blocker-text">Coordinate with platform team</td>
+          <td>Sep 8, 2026</td>
+        </tr>
+        <tr class="sb-subtask-block" id="sb-sub-0062" style="display:none;"><td colspan="8"><div class="sb-subtask-inner"><span class="sb-blocker-none">No subtasks shown in this mockup</span></div></td></tr>
+      </table>
+
+      <h2 class="sb-sec">Team focus (5)</h2>
+      <table>
+        <tr><th>Team member</th><th>Current focus</th><th>Next deliverable</th><th>Due date</th><th>Active items</th><th>Health</th></tr>
+        <tr><td><div class="sb-who"><span class="sb-avatar" style="background:#2554E8;">KA</span>Kal</div></td><td>Model deployment</td><td>Complete artifact handoff test</td><td>Sep 12, 2026</td><td>2</td><td><span class="sb-pill sb-pill-ontrack">On Track</span></td></tr>
+        <tr><td><div class="sb-who"><span class="sb-avatar" style="background:#D97706;">KC</span>Karuna</div></td><td>AWS/SageMaker integration</td><td>Obtain AWS direction on VS Code</td><td>Sep 12, 2026</td><td>2</td><td><span class="sb-pill sb-pill-atrisk">At Risk</span></td></tr>
+        <tr><td><div class="sb-who"><span class="sb-avatar" style="background:#7C3AED;">KE</span>Kevin</div></td><td>Posit Assistant</td><td>Complete provider validation</td><td>Sep 11, 2026</td><td>2</td><td><span class="sb-pill sb-pill-blocked">Blocked</span></td></tr>
+        <tr><td><div class="sb-who"><span class="sb-avatar" style="background:#D97706;">RI</span>Ritika</div></td><td>Documentation and testing</td><td>Complete operational runbook</td><td>Sep 13, 2026</td><td>2</td><td><span class="sb-pill sb-pill-ontrack">On Track</span></td></tr>
+        <tr><td><div class="sb-who"><span class="sb-avatar" style="background:#059669;">JT</span>John</div></td><td>Model monitoring</td><td>Finalize alert thresholds</td><td>Sep 16, 2026</td><td>1</td><td><span class="sb-pill sb-pill-ontrack">On Track</span></td></tr>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('.sb-story-row').forEach(row=>{
+    row.addEventListener('click', ()=>{
+      const target = document.getElementById(row.dataset.target);
+      const chev = row.querySelector('.sb-chev');
+      const isOpen = target.style.display !== 'none';
+      target.style.display = isOpen ? 'none' : 'table-row';
+      chev.classList.toggle('open', !isOpen);
+    });
+  });
+  document.querySelectorAll('.nav-item[data-page]').forEach(item=>{
+    item.addEventListener('click', ()=>{
+      document.querySelectorAll('.nav-item[data-page]').forEach(n=>n.classList.remove('active'));
+      item.classList.add('active');
+      document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+      document.getElementById('page-'+item.dataset.page).classList.add('active');
+    });
+  });
+  document.querySelectorAll('.tab').forEach(item=>{
+    item.addEventListener('click', ()=>{
+      const group = item.dataset.group;
+      document.querySelectorAll('.tab[data-group="'+group+'"]').forEach(n=>n.classList.remove('active'));
+      item.classList.add('active');
+      const sub = document.getElementById(item.dataset.sub);
+      sub.parentElement.querySelectorAll('.subpage').forEach(s=>s.classList.remove('active'));
+      sub.classList.add('active');
+    });
+  });
+  document.querySelectorAll('.chip').forEach(item=>{
+    item.addEventListener('click', ()=>{
+      item.parentElement.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+      item.classList.add('active');
+    });
+  });
+  document.querySelectorAll('.cat-head').forEach(head=>{
+    head.addEventListener('click', ()=>{
+      head.closest('.exec-cat').classList.toggle('open');
+    });
+  });
+  document.querySelectorAll('.map-head').forEach(head=>{
+    head.addEventListener('click', ()=>{
+      head.closest('.map-row').classList.toggle('open');
+    });
+  });
+  document.querySelectorAll('.switch').forEach(item=>{
+    item.addEventListener('click', ()=> item.classList.toggle('on'));
+  });
+</script>
+</body>
+</html>
